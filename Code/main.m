@@ -39,7 +39,7 @@ Vxo20=0;
 Vyo20=3.07;%7
 Vzo20=0;
 
-attitude_svo=[-0.4 0.2 0.8 0 0 0 ];
+attitude_svo=[-0.4 0.2 0.8 0.6 0.8 0];
 J=[14 0 0;0 17 0;0 0 20];
 
 Ro20=[xo20 yo20 zo20]';
@@ -65,8 +65,8 @@ ref=[0,-100,0,0,0,0]';   % Desired Value of State Vectors or Output till C =eye(
 %% Time and Other Constants 
 hours =3600;
 t0 = 0;
-tf =24*hours;
-step_time =5;
+tf =0.05*hours;
+step_time =0.0005;
 t= t0:step_time:tf;
 mu = G*(m1 + m2);
 
