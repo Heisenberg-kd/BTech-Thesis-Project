@@ -65,8 +65,8 @@ ref=[0,-100,0,0,0,0]';   % Desired Value of State Vectors or Output till C =eye(
 %% Time and Other Constants 
 hours =3600;
 t0 = 0;
-tf =0.05*hours;
-step_time =0.0005;
+tf =0.5*hours;
+step_time =5;
 t= t0:step_time:tf;
 mu = G*(m1 + m2);
 
@@ -116,4 +116,11 @@ Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LH
 
 figure(fig_no)
 fig_no=fig_no+1;
-subplot2(lqr_Attitude',t_lqr_nLHCW');
+subplot3(lqr_Attitude',t_lqr_nLHCW');
+%% Nadir Pointing Satellite
+
+[lqr_Attitude_nadir,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo);
+
+figure(fig_no)
+fig_no=fig_no+1;
+subplot3(lqr_Attitude_nadir',t_lqr_nLHCW_nadir');

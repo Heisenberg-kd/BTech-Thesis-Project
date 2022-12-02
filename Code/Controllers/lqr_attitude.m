@@ -13,10 +13,10 @@ K = lqr(A,B,Q,R);
 
 %% Simulate closed-loop system
 % x0 = [-1000;-200;-4000;30;40;50];   % initial condition 
-xdes = [0; -100; 0; 0; 0; 0];       % reference position  [w  q]
-u=@(x)-K*(x - xdes);                % control law
+% xdes = @(t)[0; 0; 0; sin(pi*t/32); 0; cos(pi*t/32)];      % reference position  [w  q]
+u=@(x,t)-K*(x - [0; 0; 0;0; 0; 0*cos(pi*t/32)]);                % control law
 
-[t,x] = ode45(@(t,x)diff_equ(x,u(x),J),tspan,x0);
+[t,x] = ode45(@(t,x)diff_equ(x,u(x,t),J),tspan,x0);
 
 end
 
