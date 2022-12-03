@@ -1,7 +1,16 @@
-function [x,t]=lqr_attitude(tspan,J,x0,n)
+function [x,t]=lqr_attitude_nadir(tspan,J,x0,n,h)
 
-A=[zeros(3,3) zeros(3,3); 0.5*eye(3,3) zeros(3,3)];
-B=[inv(J) ;zeros(3,3)];
+h2=h(2);
+f41=8*(J(3,3)-J(2,2))*n*n+2*n*h2;
+f46=(J(1,1)-J(2,2)+J(3,3))*n+h2;
+f52=6*(J(3,3)-J(1,1))*n*n;
+f63=2*(J(1,1)-J(2,2))*n*n+2*h2*n;
+C=[eye(3,3) zeros(3,3);zeros(3,3) J];
+D=[zeros(3,3) 0.5*eye(3,3);f41 0 0 0 0 f46;...
+    0 f52 0 0 0 0;0 0 f63 -f46 0 0];
+
+A=C\D;
+B=[zeros(3,3);inv(J)];
 
 %%  Design LQR controller
 Q = 1.*eye(6);

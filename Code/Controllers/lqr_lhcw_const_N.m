@@ -1,9 +1,5 @@
 function [x,t]=lqr_lhcw_const_N(x0,tspan,n)
 
-
-% m=6000;
-% r=45000000;
-
 A=[0 0 0 1 0 0; 
    0 0 0 0 1 0;
    0 0 0 0 0 1;

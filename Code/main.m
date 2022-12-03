@@ -41,6 +41,7 @@ Vzo20=0;
 
 attitude_svo=[-0.4 0.2 0.8 0.6 0.8 0];
 J=[14 0 0;0 17 0;0 0 20];
+momentum_wheel=[0;22;0];
 
 Ro20=[xo20 yo20 zo20]';
 Vo20=[Vxo20 Vyo20 Vzo20]';
@@ -65,7 +66,7 @@ ref=[0,-100,0,0,0,0]';   % Desired Value of State Vectors or Output till C =eye(
 %% Time and Other Constants 
 hours =3600;
 t0 = 0;
-tf =0.5*hours;
+tf =24*hours;
 step_time =5;
 t= t0:step_time:tf;
 mu = G*(m1 + m2);
@@ -102,25 +103,25 @@ subplot2([r32h;v32h],T2)
 %% Applying Lqr Control Technique to LHCW equations with constant Omega of Target Sattelite 
 [lqr_LHCW_n,t_lqr_nLHCW]=lqr_lhcw_const_N(initial32,t,n);
 
-figure(fig_no)%5
+figure(fig_no)%3
 fig_no=fig_no+1; 
 subplot2(lqr_LHCW_n',t_lqr_nLHCW');
 
-figure(fig_no)%6
+figure(fig_no)%4
 fig_no=fig_no+1; 
 Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LHCW_n(:,2)'; y2(3,:)+ lqr_LHCW_n(:,3)']);
 
 %% Attitude Control
 
-[lqr_Attitude,t_Attitude]=lqr_attitude(t,J,attitude_svo);
+[lqr_Attitude,t_Attitude]=lqr_attitude(t,J,attitude_svo,n);
 
-figure(fig_no)
+figure(fig_no)%5
 fig_no=fig_no+1;
 subplot3(lqr_Attitude',t_lqr_nLHCW');
 %% Nadir Pointing Satellite
 
-[lqr_Attitude_nadir,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo);
+[lqr_Attitude_nadir,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo,n,momentum_wheel);
 
-figure(fig_no)
+figure(fig_no)%6
 fig_no=fig_no+1;
-subplot3(lqr_Attitude_nadir',t_lqr_nLHCW_nadir');
+subplot3(lqr_Attitude_nadir',t_lqr_nLHCW');
