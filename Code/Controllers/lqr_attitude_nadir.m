@@ -24,6 +24,9 @@ K = lqr(A,B,Q,R);
 u=@(x,t)-K*(x - [0; 0; 0;0*sin(n*t); 0; 0*cos(n*t)]);                % control law
 
 [t,x] = ode45(@(t,x)diff_equ(x,u(x,t),A,B),tspan,x0);
+x=[x(:,4:6) x(:,1:3)];
+q0=(ones(size(t,1))-x(:,4).^2-x(:,5).^2-x(:,6).^2).^0.5;
+x=[x q0];
 end
 
 function dy = diff_equ(x,u,A,B)

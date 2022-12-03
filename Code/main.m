@@ -105,6 +105,7 @@ subplot2([r32h;v32h],T2)
 
 figure(fig_no)%3
 fig_no=fig_no+1; 
+sgtitle("LQR control on Orbital Propagation");
 subplot2(lqr_LHCW_n',t_lqr_nLHCW');
 
 figure(fig_no)%4
@@ -117,6 +118,7 @@ Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LH
 
 figure(fig_no)%5
 fig_no=fig_no+1;
+sgtitle("LQR control on ");
 subplot3(lqr_Attitude',t_lqr_nLHCW');
 %% Nadir Pointing Satellite
 
