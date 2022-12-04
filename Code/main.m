@@ -66,7 +66,7 @@ ref=[0,-100,0,0,0,0]';   % Desired Value of State Vectors or Output till C =eye(
 %% Time and Other Constants 
 hours =3600;
 t0 = 0;
-tf =24*hours;
+tf =(24)*hours;
 step_time =5;
 t= t0:step_time:tf;
 mu = G*(m1 + m2);
@@ -105,11 +105,12 @@ subplot2([r32h;v32h],T2)
 
 figure(fig_no)%3
 fig_no=fig_no+1; 
-sgtitle("LQR control on Orbital Propagation");
+sgtitle("LQR control on Chaser Satellite");
 subplot2(lqr_LHCW_n',t_lqr_nLHCW');
 
 figure(fig_no)%4
 fig_no=fig_no+1; 
+sgtitle("Satellite Motion with LQR control on Chaser Satellite ");
 Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LHCW_n(:,2)'; y2(3,:)+ lqr_LHCW_n(:,3)']);
 
 %% Attitude Control
@@ -118,12 +119,23 @@ Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LH
 
 figure(fig_no)%5
 fig_no=fig_no+1;
-sgtitle("LQR control on ");
-subplot3(lqr_Attitude',t_lqr_nLHCW');
+sgtitle("Attitude Control using LQR Control on Inertial Pointing Spacecraft ");
+subplot3(lqr_Attitude,t_lqr_nLHCW);
 %% Nadir Pointing Satellite
 
-[lqr_Attitude_nadir,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo,n,momentum_wheel);
+[lqr_Attitude_nadir,lqr_inertial,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo,n,momentum_wheel,C);
 
 figure(fig_no)%6
 fig_no=fig_no+1;
-subplot3(lqr_Attitude_nadir',t_lqr_nLHCW');
+sgtitle("Attitude Control using LQR Control on Non-Inertial Pointing Spacecraft ");
+subplot3(lqr_Attitude_nadir,t_lqr_nLHCW);
+
+figure(fig_no)%6
+fig_no=fig_no+1;
+plot(t_Attitude_nadir,lqr_inertial(1,:),'-k')
+hold on
+plot(t_Attitude_nadir,lqr_inertial(2,:),'-b')
+plot(t_Attitude_nadir,lqr_inertial(3,:),'-r')
+title('Angular Velocity of Spacecraft Body wrt Inertial Frame in Inertial Frame')
+legend('wx','wy','wz')
+hold off

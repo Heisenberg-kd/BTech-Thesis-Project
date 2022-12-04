@@ -12,7 +12,7 @@ legend('wx','wy','wz')
 hold off
 
 subplot(2,1,2)
-plot(T,y(7,:),"-y")
+plot(T,y(7,:),"Color","#7E2F8E")
 hold on
 plot(T,y(4,:),'-k')
 plot(T,y(5,:),'-b')
