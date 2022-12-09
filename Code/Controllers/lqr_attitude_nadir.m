@@ -15,7 +15,6 @@ B=[zeros(3,3);inv(J)];
 %%  Design LQR controller
 Q = 1.*eye(6);
 R = eye(3);
-
 K = lqr(A,B,Q,R);
 
 %% Simulate closed-loop system
@@ -23,7 +22,7 @@ K = lqr(A,B,Q,R);
 % xdes = @(t)[0; 0; 0; sin(pi*t/32); 0; cos(pi*t/32)];      % reference position  [w  q]
 u=@(x,t)-K*(x - [0; 0; 0;0*sin(n*t); 0; 0*cos(n*t)]);                % control law
 
-[t,x] = ode45(@(t,x)diff_equ(x,u(x,t),A,B),tspan,x0);
+[t,x] = ode45(@(t,x)A*x+B*u(x,t),tspan,x0);
 x=[x(:,4:6) x(:,1:3)];
 q0_column=(ones(size(t))-x(:,4).^2-x(:,5).^2-x(:,6).^2).^0.5;
 x=[x q0_column];
@@ -39,8 +38,4 @@ for i =1:size(t)
     Alb(3,:)=[2*q1*q3+2*q0*q2, 2*q2*q3-2*q0*q1, 2*q0*q0-1+2*q3*q3];
     y(1:3,i)=(C(:,:,i)*Alb)\x(1:3,i);    %y is angular velocity of BOdy Coordinate system wrt intertail frame in inertial frame.
 end
-end
-
-function dy = diff_equ(x,u,A,B)
-dy = A*x+B*u;
 end

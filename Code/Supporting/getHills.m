@@ -22,7 +22,7 @@ Omega20=zeros(3,length(y2));
         exh=R20/norm(R20);%h is used for hills frame.
         ezh=cross(R20,V20)/norm(cross(R20,V20));
         eyh=cross(ezh,exh);
-        C(:,:,i)=[exh, eyh, ezh ]';
+        C(:,:,i)=[exh, ezh, eyh]';
 
         r32=[y3(1,i) - y2(1,i); y3(2,i) - y2(2,i); y3(3,i) - y2(3,i)];
         v32=[y3(4,i) - y2(4,i); y3(5,i) - y2(5,i); y3(6,i) - y2(6,i)];

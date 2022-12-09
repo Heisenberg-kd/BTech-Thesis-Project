@@ -15,7 +15,6 @@ warning off;
 addpath(genpath(pwd));
 % close all;
 
-global mu m1 m2 m3 G Re ;
 %% Earth:
 m1 = 5.974e24;
 Re = 6378;
@@ -39,7 +38,7 @@ Vxo20=0;
 Vyo20=3.07;%7
 Vzo20=0;
 
-attitude_svo=[-0.4 0.2 0.8 0.6 0.8 0];
+attitude_svo=[-0.4 0.2 0.8 0.6 0.8 0];    % Initial State Vector of Attitude Control
 J=[14 0 0;0 17 0;0 0 20];
 momentum_wheel=[0;22;0];
 
@@ -66,7 +65,7 @@ ref=[0,-100,0,0,0,0]';   % Desired Value of State Vectors or Output till C =eye(
 %% Time and Other Constants 
 hours =3600;
 t0 = 0;
-tf =(24)*hours;
+tf =24*hours;
 step_time =5;
 t= t0:step_time:tf;
 mu = G*(m1 + m2);
@@ -90,10 +89,9 @@ p30=[xo30; yo30; zo30; Vxo30; Vyo30; Vzo30];
 figure(fig_no)%1
 fig_no=fig_no+1;
 sgtitle('Satellites motion under Earth Gravitation');
-Earthplot([y2(1:3,:)],[y3(1:3,:)]);
+Earthplot([y2(1:3,:)],[y3(1:3,:)],Re);
 %% Getting the relative value of Deputy(chaser) Sat-2 wrt to Leader(Target) Sat-1 in Hills frame
 %  and Plotting it 
-
 [r32h, v32h,C,Omega20] = getHills(y2, y3);
 
 figure(fig_no)%2
@@ -111,9 +109,9 @@ subplot2(lqr_LHCW_n',t_lqr_nLHCW');
 figure(fig_no)%4
 fig_no=fig_no+1; 
 sgtitle("Satellite Motion with LQR control on Chaser Satellite ");
-Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LHCW_n(:,2)'; y2(3,:)+ lqr_LHCW_n(:,3)']);
+Earthplot([y2(1,:); y2(2,:) ;y2(3,:)],[y2(1,:)+lqr_LHCW_n(:,1)'; y2(2,:)+ lqr_LHCW_n(:,2)'; y2(3,:)+ lqr_LHCW_n(:,3)'],Re);
 
-%% Attitude Control
+%% Attitude Control for Linearised Inertial Pointing Satellite
 
 [lqr_Attitude,t_Attitude]=lqr_attitude(t,J,attitude_svo,n);
 
@@ -121,7 +119,7 @@ figure(fig_no)%5
 fig_no=fig_no+1;
 sgtitle("Attitude Control using LQR Control on Inertial Pointing Spacecraft ");
 subplot3(lqr_Attitude,t_lqr_nLHCW);
-%% Nadir Pointing Satellite
+%% Attitude Control for Linearised Nadir Pointing Satellite
 
 [lqr_Attitude_nadir,lqr_inertial,t_Attitude_nadir]=lqr_attitude_nadir(t,J,attitude_svo,n,momentum_wheel,C);
 
@@ -130,7 +128,7 @@ fig_no=fig_no+1;
 sgtitle("Attitude Control using LQR Control on Non-Inertial Pointing Spacecraft ");
 subplot3(lqr_Attitude_nadir,t_lqr_nLHCW);
 
-figure(fig_no)%6
+figure(fig_no)%7
 fig_no=fig_no+1;
 plot(t_Attitude_nadir,lqr_inertial(1,:),'-k')
 hold on

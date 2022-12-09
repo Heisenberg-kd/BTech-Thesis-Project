@@ -1,5 +1,4 @@
-function Earthplot(y1,y2)
-global Re ;
+function Earthplot(y1,y2,Re)
 
 i1=y1(:,1);
 i2=y2(:,2);
